@@ -9,12 +9,12 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from flask import abort
 
-
+"""There is an ugly mistake here please act stupid"""
 
 class Colors(db.Model):
     id = db.Column(db.Integer,  primary_key=True)
     color = db.Column(db.String(255), nullable=False)
-    available_size = db.Column(db.String(255), nullable=False, default="S M L XL XXL")
+    available_size = db.Column(db.String(255), nullable=False, default="S M L XL XXL XXXL XXXXL XXXXXL XXXXXXL")
 
 
 class design(db.Model):
@@ -42,6 +42,8 @@ class Client(db.Model):
     client_city = db.Column(db.String(255))
     client_distruct = db.Column(db.String(255))
     added_by = db.Column(db.String(255))
+    buying_times = db.Column(db.Integer, default=0)
+
     since = db.Column(db.String(255), nullable=False, default=func.now())
 
 
@@ -62,7 +64,7 @@ class MyModelView(ModelView):
     def is_accessible(self):
         try:
             user = User().query.filter_by(username=current_user.username).first()
-            auth = True
+            auth = True #current_user.is_authenticated didn't work here.
         except:
             abort(404)
         return auth
