@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<body class='text-white'>
+  <nav class="navbar navbar-expand-lg navbar-dark bg" style="background-color: #212429;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Orders Manager</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link" href="/register_client">Register client</a>
+          <a class="nav-link" href="/create_order">Create order</a>
+          <a class="nav-link" target="_blank" href="https://api.whatsapp.com/send?phone=966563975058">Support</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <h1 class="text-center p-5">Welcome {{ current_user.username }}</h1>
+  <div class="container d-flex justify-content-center">
+
+    <div class="form-group p-5 rounded" style="background-color: #212429;">
+      <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+        <center>
+          <h1>Register client</h1>
+        </center>
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %} {% for category, message in messages %} {% if category ==
+          'error' %}
+          <div class="alert alert-danger alter-dismissable fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          {% else %}
+          <div class="alert alert-success alter-dismissable fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          {% endif %} {% endfor %} {% endif %} {% endwith %}
+        <div class="row py-1">
+          <div class="col col-xl col-xs col-lg col-md col-sm">
+            <label>First name</label>
+            <input name="firstName" type="text" class="form-control" placeholder="First name">
+          </div>
+          <div class="col col-xl col-xs col-lg col-md col-sm">
+            <label>Last Name</label>
+            <input name="lastName" type="text" class="form-control" placeholder="Last name">
+          </div>
+        </div>
+        <div class="row py-1">
+          <div class="col col-xl col-xs col-lg col-md col-sm">
+            <label>City</label>
+            <input name="city" type="text" class="form-control" placeholder="City">
+          </div>
+          <div class="col col-xl col-xs col-lg col-md col-sm">
+            <label>Distruct</label>
+            <input name="distruct" type="text" class="form-control" placeholder="Distruct">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 phoneNumber">
+            <label for="inlineFormInputGroup">Phone Number</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text">+966</div>
+              </div>
+              <input name="phoneNumber" type="text" class="form-control" id="inlineFormInputGroup" placeholder="Phone number">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 d-flex mt-5 justify-content-center">
+            <input class='btn btn-primary w-50' type="submit" value="Submit" name="submit" id="submit_btn">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #131718;
+    height: 100vh;
+  }
+</style>
+
+</html>

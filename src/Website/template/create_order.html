@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        crossorigin="anonymous" />
+    <title>Dar3en | {% block title %}Create order{% endblock %}</title>
+
+</head>
+
+<body class='text-white'>
+    <h1 class="text-center p-5">Welcome dar3en</h1>
+    <div class="container d-flex justify-content-center">
+        <div class="form-group form-bg p-xl-5 p-md-5 p-sm-5 p-xs-5 p-md-5  rounded" style="background-color: #212429;">
+
+
+            <form method="POST" class="form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+                <center>
+                    <h1>Create order</h1>
+                </center>
+                {% with messages = get_flashed_messages(with_categories=true) %} {% if
+                messages %} {% for category, message in messages %} {% if category ==
+                'error' %}
+                <div class="alert alert-danger alter-dismissable fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% else %}
+                <div class="alert alert-success alter-dismissable fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %} {% endfor %} {% endif %} {% endwith %}
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group my-2">
+                            <label for="design">Design</label>
+                            <select name="design" class="form-control" id="Design">
+                                {% for design in designs %}
+                                <option>{{ design.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group my-2">
+                            <label for="Size">Size</label>
+                            <select name="size" class="form-control" id="Size">
+                                {% for size in color %}
+                                    <option>{{ size }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group my-2">
+                            <label for="Adjustment">Adjustment</label>
+                            <input name="adjustment" type="text" class="form-control" placeholder="Adjustment">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group my-2">
+                            <label for="Color">Color</label>
+                            <select name="color" class="form-control" id="color">
+                                {% for i in colors %}
+                                <option>{{ i.color }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group my-2">
+                            <label for="quantity">Quantity</label>
+                            <select name="quantity" class="form-control" id="Size">
+                                {% for i in range(1,11) %}
+                                <option>{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xl">
+                        <div class="form-group my-2">
+                            <label for="Phone number">Phone Number</label>
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text col-lg-12">966</div>
+                                </div>
+                                <input type="text" name="client_phone" class="form-control rounded" id="phoneNumber"
+                                    placeholder="Phone number">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-12 mt-5 d-flex justify-content-center">
+                        <input class='btn btn-primary w-50' type="submit" value="Submit" name="submit" id="submit_btn">
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+<style>
+    @media (max-width: 575.98px) {
+        .form-bg {
+            padding: 1.5rem;
+        }
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #131718;
+        height: 100vh;
+    }
+</style>
+
+</html>
