@@ -44,10 +44,8 @@ def create_order():
         client_phone = request.form.get('client_phone')
         author = current_user.username
         client = Client().query.filter_by(client_phone_number=client_phone).first()
-
         new_shirt = Orders(design_name=design, tshirt_size=size, quantity=quantity,
                            color=color, adjustments=adjustment, client_number=client_phone, author=author)
-
 
         if client_phone == '':
             flash("Please enter client's phone number!", category='error')
@@ -55,14 +53,11 @@ def create_order():
             int(client_phone)
         except ValueError:
             flash("Phone number can only be numbers!", category='error')
-
-
+        if not client:
+            flash("Must add client first!", category='error')
 
         else:
             try:
-
-
-
 
                 """ This code keeps returning 'Can't Operate on a closed database' So
                 basically it gives an error ever time someone adds a shirt. Couldn't 
