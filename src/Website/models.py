@@ -8,6 +8,8 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from flask import abort
+from datetime import date
+
 
 """There is an ugly mistake here please act stupid"""
 
@@ -49,7 +51,7 @@ class Client(db.Model):
 
 
 class Orders(db.Model):
-    date = db.Column(db.String(255), nullable=False, default=func.now())
+    date = db.Column(db.String(255), nullable=False, default=date.today())
     client_number = db.Column(db.String(255), nullable=False, default='')
     author = db.Column(db.String(255), nullable=False, default='dar3en')
     Type = db.Column(db.String(255), nullable=False)
@@ -70,3 +72,4 @@ class MyModelView(ModelView):
         except:
             abort(404)
         return auth
+

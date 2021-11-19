@@ -13,6 +13,8 @@ from .models import Orders
 from .models import design as Design
 from .models import User, Colors, Client
 from . import DB_NAME, db
+from datetime import date
+
 views = Blueprint('views', __name__)
 
 
@@ -97,7 +99,8 @@ def create_order():
                 adjustments=adjustment,
                 Type=product,
                 author=author,
-                date=func.now()).first()
+                date=date.today(),
+                done=False).first()
 
                 if client_order:
 

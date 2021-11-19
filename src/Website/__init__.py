@@ -41,6 +41,7 @@ def create_app():
     admin.add_view(MyModelView(User, db.session))
     admin.add_view(MyModelView(Client, db.session))
     admin.add_view(MyModelView(Colors, db.session))
+    
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
