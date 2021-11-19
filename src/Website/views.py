@@ -3,6 +3,7 @@ from flask.helpers import flash, url_for
 from flask.wrappers import Request
 from flask_cors import CORS
 from sqlalchemy import engine
+from sqlalchemy.sql import func
 from sqlalchemy.sql.functions import user
 from flask_login.utils import login_user, current_user
 from werkzeug.security import generate_password_hash
@@ -95,7 +96,8 @@ def create_order():
                 tshirt_size=size,
                 adjustments=adjustment,
                 Type=product,
-                author=author).first()
+                author=author,
+                date=func.now()).first()
 
                 if client_order:
 
