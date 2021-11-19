@@ -21,6 +21,7 @@ class design(db.Model):
     id = db.Column(db.Integer,  primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     collection = db.Column(db.String(255), nullable=False)
+    Type = db.Column(db.String(255), nullable=False)
     sold = db.Column(db.Integer, nullable=False, default=0)
 
 
@@ -51,6 +52,7 @@ class Orders(db.Model):
     date = db.Column(db.String(255), nullable=False, default=func.now())
     client_number = db.Column(db.String(255), nullable=False, default='')
     author = db.Column(db.String(255), nullable=False, default='dar3en')
+    Type = db.Column(db.String(255), nullable=False)
     adjustments = db.Column(db.String(255), nullable=False, default='')
     quantity = db.Column(db.Integer, nullable=False)
     tshirt_size = db.Column(db.String(255), nullable=False)

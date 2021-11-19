@@ -21,53 +21,82 @@ def create_order():
 
     if request.method == "GET":
         for color in colors:
-            """ This will make ever Size in the list as an independent value 
+            """ This will make every Size in the list as an independent value 
                 Format in database must be like: 'S M L XL ....' with a space between every
                 size and the other.  """
 
-            color = list(color.available_size.split(" "))
+            sizes = list(color.available_size.split(" "))
+
+
+
+        for design in designs:
+            """ This will make every type of (shirt, hoodie) in the list as an independent value 
+            Format in database must be like: 'Shirt hoodie cap ....' with a space between every
+            type and the other.  """
+
+            product_type = list(design.Type.split(" "))
 
         if current_user.is_authenticated:
-            return render_template('create_order.html', designs=designs, colors=colors, color=color, user=current_user)
+            return render_template('create_order.html', designs=designs, colors=colors, sizes=sizes, user=current_user,
+            product_type=product_type)
         else:
             return redirect(url_for('auth.login'))
 
     elif request.method == "POST":
-
+        """ same as the one at the get, to avoid 'UnboundLocalError: local variable 
+        'product_type','sizes' referenced before assignment'
+         """
         for color in colors:
-            db_color = list(color.available_size.split(" "))
+            sizes = list(color.available_size.split(" "))
+        for design in designs:
+            product_type = list(design.Type.split(" "))
+
+
         design = request.form.get('design')
         size = request.form.get('size')
         quantity = request.form.get('quantity')
         color = request.form.get('color')
         adjustment = request.form.get('adjustment')
         client_phone = request.form.get('client_phone')
+        product = request.form.get('Type')
         author = current_user.username
         client = Client().query.filter_by(client_phone_number=client_phone).first()
         new_shirt = Orders(design_name=design, tshirt_size=size, quantity=quantity,
-                           color=color, adjustments=adjustment, client_number=client_phone, author=author)
-
+                           color=color, adjustments=adjustment, client_number=client_phone,
+                           Type=product, author=author)
+        
+        
         if client_phone == '':
             flash("Please enter client's phone number!", category='error')
-        try:
-            int(client_phone)
-        except ValueError:
-            flash("Phone number can only be numbers!", category='error')
-        if not client:
+
+        elif len(client_phone) < 9:
+            flash("Phone number must be 9 numbers!", category='error')
+
+        elif not client:
             flash("Must add client first!", category='error')
+
+
+        elif product == "Choose a product":
+            flash("Please choose a product!", category='error')
+
 
         else:
             try:
+                int(client_phone)
+
 
                 """ This code keeps returning 'Can't Operate on a closed database' So
                 basically it gives an error ever time someone adds a shirt. Couldn't 
                 solve this at the moment. """
 
-                shirts = db.session.execute(
-                    f'SELECT * From Orders WHERE design_name="{design}" AND color="{color}" AND author="{author}" AND client_number="{client_phone}" AND tshirt_size="{size}"')
 
                 """looping throught all shirts in the db, compares it to the new one
                 and if it exists it will the new quantity to the old one."""
+
+                shirts = db.session.execute(
+                    f'SELECT * From Orders WHERE design_name="{design}" AND color="{color}" AND author="{author}" AND client_number="{client_phone}" AND tshirt_size="{size}" AND Type="{product}" ')
+
+
 
                 for shirt in shirts:
                     shirt['quantity'] + int(quantity)
@@ -90,11 +119,15 @@ def create_order():
 
                     
             # SHUTUP I KNOW
+            except ValueError:
+                flash("Phone number can only be numbers!", category='error')
             except Exception as e:
                 print(e)
 
-
-        return render_template('create_order.html', designs=designs, colors=colors, color=db_color, user=current_user)
+            return render_template('create_order.html', designs=designs, colors=colors, sizes=sizes, user=current_user,
+            product_type=product_type)
+    return render_template('create_order.html', designs=designs, colors=colors, sizes=sizes, user=current_user,
+    product_type=product_type)
 
 
 
@@ -128,7 +161,9 @@ def register_client():
                 flash("Phone number can only be numbers!", category='error')
 
             else:
-                new_client = Client(client_first_name=firstName, client_last_name=lastName, client_city=city, client_distruct=distruct, client_phone_number=client_phone, added_by=current_user.username)
+                new_client = Client(client_first_name=firstName, client_last_name=lastName, client_city=city,
+                client_distruct=distruct, client_phone_number=client_phone,
+                added_by=current_user.username)
                 db.session.add(new_client)
                 db.session.commit()
                 flash("Client added successfully!",category="success")
