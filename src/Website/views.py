@@ -8,8 +8,9 @@ from flask_login.utils import login_user, current_user
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import redirect
 from Website import create_app
-from .models import Orders as Orders, User, Colors, Client
+from .models import Orders
 from .models import design as Design
+from .models import User, Colors, Client
 from . import DB_NAME, db
 views = Blueprint('views', __name__)
 
@@ -20,6 +21,10 @@ def create_order():
     colors = Colors.query.all()
 
     if request.method == "GET":
+        # f'SELECT * From Orders WHERE design_name="{design}"
+        # AND color="{color}" AND author="{author}" AND client_number="{client_phone}" AND tshirt_size="{size}" 
+        # AND Type="{product}"
+
         for color in colors:
             """ This will make every Size in the list as an independent value 
                 Format in database must be like: 'S M L XL ....' with a space between every
@@ -51,7 +56,6 @@ def create_order():
         for design in designs:
             product_type = list(design.Type.split(" "))
 
-
         design = request.form.get('design')
         size = request.form.get('size')
         quantity = request.form.get('quantity')
@@ -64,8 +68,7 @@ def create_order():
         new_shirt = Orders(design_name=design, tshirt_size=size, quantity=quantity,
                            color=color, adjustments=adjustment, client_number=client_phone,
                            Type=product, author=author)
-        
-        
+
         if client_phone == '':
             flash("Please enter client's phone number!", category='error')
 
@@ -75,57 +78,48 @@ def create_order():
         elif not client:
             flash("Must add client first!", category='error')
 
-
         elif product == "Choose a product":
             flash("Please choose a product!", category='error')
-
 
         else:
             try:
                 int(client_phone)
+                
+                """
+                    checking if same order already exists and if so
+                    it will add quantit to the existing order else will
+                    add a new shirt to the database.
+                """
+                client_order = Orders().query.filter_by(design_name=design, 
+                color=color,
+                tshirt_size=size,
+                adjustments=adjustment,
+                Type=product,
+                author=author).first()
 
+                if client_order:
 
-                """ This code keeps returning 'Can't Operate on a closed database' So
-                basically it gives an error ever time someone adds a shirt. Couldn't 
-                solve this at the moment. """
-
-
-                """looping throught all shirts in the db, compares it to the new one
-                and if it exists it will the new quantity to the old one."""
-
-                shirts = db.session.execute(
-                    f'SELECT * From Orders WHERE design_name="{design}" AND color="{color}" AND author="{author}" AND client_number="{client_phone}" AND tshirt_size="{size}" AND Type="{product}" ')
-
-
-
-                for shirt in shirts:
-                    shirt['quantity'] + int(quantity)
-                    shirt = Orders.query.filter_by(id=shirt['id']).first()
-                    shirt.quantity += int(quantity)
+                    client_order.quantity += int(quantity)
                     design = Design.query.filter_by(name=design).first()
                     design.sold += int(quantity)
                     db.session.commit()
                     flash("Order created successfully!", category="success")
+ 
 
-
-                # Adds incase it doesn't exist, somehow i can't make triple quotation :$
-                else:
-                    design = Design.query.filter_by(name=design).first()
-                    design.sold += int(quantity)
+                elif not client_order:
                     db.session.add(new_shirt)
+                    design = Design.query.filter_by(name=design).first()
+                    design.sold += int(quantity)
                     db.session.commit()
                     flash("Order created successfully!", category="success")
-
-
                     
-            # SHUTUP I KNOW
             except ValueError:
                 flash("Phone number can only be numbers!", category='error')
-            except Exception as e:
-                print(e)
+
 
             return render_template('create_order.html', designs=designs, colors=colors, sizes=sizes, user=current_user,
             product_type=product_type)
+
     return render_template('create_order.html', designs=designs, colors=colors, sizes=sizes, user=current_user,
     product_type=product_type)
 
