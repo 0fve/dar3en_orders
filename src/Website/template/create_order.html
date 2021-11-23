@@ -39,12 +39,12 @@
         </div>
     </nav>
 
-    <h1 class="text-center p-5">Welcome {{ current_user.username }}</h1>
+    <h1 class="text-center p-3">Welcome {{ current_user.username }}</h1>
     <div class="container d-flex justify-content-center">
         <div class="form-group form-bg p-xl-5 p-md-5 p-sm-5 p-xs-5 p-md-5  rounded" style="background-color: #212429;">
 
 
-            <form method="POST" class="form">
+            <form method="POST" name="form" class="form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 
                 <center>
@@ -81,12 +81,10 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="form-group my-2">
+                        <div class="form-group my-2 disabled">
                             <label for="Size">Size</label>
                             <select name="size" class="form-control" id="Size">
-                                {% for size in sizes %}
-                                <option>{{ size }}</option>
-                                {% endfor %}
+                                <option id='choose-first'>Choose a color first</option>
                             </select>
                         </div>
                     </div>
@@ -101,9 +99,9 @@
                     <div class="col">
                         <div class="form-group my-2">
                             <label for="Color">Color</label>
-                            <select name="color" class="form-control" id="color">
+                            <select onclick="Get_color()" name="color" class="form-control" id="color">
                                 {% for i in colors %}
-                                <option>{{ i.color }}</option>
+                                <option value="{{ i.color }}" >{{ i.color }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -153,7 +151,6 @@
         </div>
 
     </div>
-    <!-- list(color.available_size.split(" ")) -->
 </body>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -165,6 +162,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
 <style>

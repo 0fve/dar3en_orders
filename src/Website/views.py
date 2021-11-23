@@ -24,18 +24,6 @@ def create_order():
     colors = Colors.query.all()
 
     if request.method == "GET":
-        # f'SELECT * From Orders WHERE design_name="{design}"
-        # AND color="{color}" AND author="{author}" AND client_number="{client_phone}" AND tshirt_size="{size}" 
-        # AND Type="{product}"
-
-        for color in colors:
-            """ This will make every Size in the list as an independent value 
-                Format in database must be like: 'S M L XL ....' with a space between every
-                size and the other.  """
-
-            sizes = list(color.available_size.split(" "))
-
-
 
         for design in designs:
             """ This will make every type of (shirt, hoodie) in the list as an independent value 
@@ -45,17 +33,16 @@ def create_order():
             product_type = list(design.Type.split(" "))
 
         if current_user.is_authenticated:
-            return render_template('create_order.html', designs=designs, colors=colors, sizes=sizes, user=current_user,
+            return render_template('create_order.html', designs=designs, colors=colors, user=current_user,
             product_type=product_type)
         else:
             return redirect(url_for('auth.login'))
 
     elif request.method == "POST":
-        """ same as the one at the get, to avoid 'UnboundLocalError: local variable 
-        'product_type','sizes' referenced before assignment'
+        """ same as the one at the GET, to avoid 'UnboundLocalError: local variable 
+        'product_type' referenced before assignment'
          """
-        for color in colors:
-            sizes = list(color.available_size.split(" "))
+
         for design in designs:
             product_type = list(design.Type.split(" "))
 
@@ -93,7 +80,8 @@ def create_order():
                     it will add quantit to the existing order else will
                     add a new shirt to the database.
                 """
-                client_order = Orders().query.filter_by(design_name=design, 
+                client_order = Orders().query.filter_by(
+                design_name=design, 
                 color=color,
                 tshirt_size=size,
                 adjustments=adjustment,
@@ -122,10 +110,10 @@ def create_order():
                 flash("Phone number can only be numbers!", category='error')
 
 
-            return render_template('create_order.html', designs=designs, colors=colors, sizes=sizes, user=current_user,
+            return render_template('create_order.html', designs=designs, colors=colors, user=current_user,
             product_type=product_type)
 
-    return render_template('create_order.html', designs=designs, colors=colors, sizes=sizes, user=current_user,
+    return render_template('create_order.html', designs=designs, colors=colors, user=current_user,
     product_type=product_type)
 
 

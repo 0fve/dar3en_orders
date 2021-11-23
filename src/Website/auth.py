@@ -5,12 +5,10 @@ from werkzeug.utils import redirect
 from . import db
 from flask import Blueprint, json, make_response, abort, request
 import flask
+from flask import jsonify
 from flask.templating import render_template
 from flask_wtf.csrf import CSRFError
-import nest_asyncio
-from .models import User
-nest_asyncio.apply()
-
+from .models import User, Colors
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', "POST"])
@@ -47,3 +45,18 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
+
+@auth.route('/checkSizes/<color>', methods=["GET","POST"])
+def check_sizes(color):
+    sizes = Colors.query.filter_by(color=color).all()
+
+    
+    for size in sizes:
+        Color = {
+            'color': size.color,
+            'sizes': size.available_size.split(" ")
+        }
+
+        
+
+    return jsonify(Color)
