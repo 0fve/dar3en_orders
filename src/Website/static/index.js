@@ -15,4 +15,8 @@ function Get_color() {
                 sizes_select.innerHTML = sizes
             }
         })
+        .catch( function (error){
+            location.reload();
+        }
+        )
 }
