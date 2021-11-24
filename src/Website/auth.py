@@ -39,7 +39,6 @@ def login():
     
     return render_template('login.html', user=current_user)
 
-
 @auth.route('/logout')
 @login_required
 def logout():
@@ -49,14 +48,9 @@ def logout():
 @auth.route('/checkSizes/<color>', methods=["GET","POST"])
 def check_sizes(color):
     sizes = Colors.query.filter_by(color=color).all()
-
-    
     for size in sizes:
         Color = {
             'color': size.color,
             'sizes': size.available_size.split(" ")
         }
-
-        
-
     return jsonify(Color)

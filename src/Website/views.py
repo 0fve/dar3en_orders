@@ -24,7 +24,7 @@ def create_order():
     colors = Colors.query.all()
 
     if request.method == "GET":
-
+        db.create_all()
         for design in designs:
             """ This will make every type of (shirt, hoodie) in the list as an independent value 
             Format in database must be like: 'Shirt hoodie cap ....' with a space between every
@@ -90,22 +90,37 @@ def create_order():
                 date=date.today(),
                 done=False).first()
 
+                design = Design.query.filter_by(name=design).first()
                 if client_order:
 
                     client_order.quantity += int(quantity)
-                    design = Design.query.filter_by(name=design).first()
                     design.sold += int(quantity)
                     db.session.commit()
-                    flash("Order created successfully!", category="success")
+
  
 
                 elif not client_order:
                     db.session.add(new_shirt)
-                    design = Design.query.filter_by(name=design).first()
                     design.sold += int(quantity)
                     db.session.commit()
-                    flash("Order created successfully!", category="success")
+
+
+                def total(new_shirt):
                     
+                    shirtPrice = (int(quantity)*design.shirt_price)
+                    hoodiePrice = (int(quantity)*design.hoodie_price)
+                    tax = 0.15
+
+                    if new_shirt.Type == 'Shirt':
+                        total_price = f"Total price: {shirtPrice*tax+shirtPrice}"
+
+                    
+                    elif new_shirt.Type == 'Hoodie':
+                        total_price = f"Total price: {hoodiePrice*tax+hoodiePrice}"
+
+                    flash(f"Order created! {total_price}", category="success")
+
+                total(new_shirt)
             except ValueError:
                 flash("Phone number can only be numbers!", category='error')
 

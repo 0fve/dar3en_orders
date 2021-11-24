@@ -50,6 +50,7 @@
                 <center>
                     <h1>Create order</h1>
                 </center>
+                <!-- flashes -->
                 {% with messages = get_flashed_messages(with_categories=true) %} {% if
                 messages %} {% for category, message in messages %} {% if category ==
                 'error' %}
@@ -59,7 +60,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                {% else %}
+                {% elif category == 'success' %}
                 <div class="alert alert-success alter-dismissable fade show" role="alert">
                     {{ message }}
                     <button type="button" class="close" data-dismiss="alert">
@@ -67,10 +68,12 @@
                     </button>
                 </div>
                 {% endif %} {% endfor %} {% endif %} {% endwith %}
+                <!-- end flashes -->
+                
+                
+                <!-- new row -->
                 <div class="row">
-
-                    <div class="col">
-
+                    <div class="col-6">
                         <div class="form-group my-2">
                             <label for="design">Design</label>
                             <select name="design" class="form-control" id="Design">
@@ -80,7 +83,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-6">
                         <div class="form-group my-2 disabled">
                             <label for="Size">Size</label>
                             <select name="size" class="form-control" id="Size">
@@ -89,26 +92,34 @@
                         </div>
                     </div>
                 </div>
+
+
+
+                <!-- new row -->
                 <div class="row">
-                    <div class="col">
+                    <div class="col-6">
                         <div class="form-group my-2">
                             <label for="Adjustment">Adjustment</label>
                             <input name="adjustment" type="text" class="form-control" placeholder="Adjustment">
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-6">
                         <div class="form-group my-2">
                             <label for="Color">Color</label>
                             <select onclick="Get_color()" name="color" class="form-control" id="color">
                                 {% for i in colors %}
-                                <option value="{{ i.color }}" >{{ i.color }}</option>
+                                <option value="{{ i.color }}">{{ i.color }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                     </div>
                 </div>
+
+
+
+                <!-- new row -->
                 <div class="row">
-                    <div class="col">
+                    <div class="col-6">
                         <div class="form-group my-2">
                             <label for="quantity">Quantity</label>
                             <select name="quantity" class="form-control" id="Size">
@@ -142,11 +153,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="row ">
+
+
+
+                <!-- new row -->
+                <div class="row">
                     <div class="col-12 mt-5 d-flex justify-content-center">
                         <input class='btn btn-primary w-50' type="submit" value="Submit" name="submit" id="submit_btn">
                     </div>
                 </div>
+                
             </form>
         </div>
 
@@ -162,7 +178,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
 <style>

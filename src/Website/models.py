@@ -24,6 +24,8 @@ class design(db.Model):
     name = db.Column(db.String(255), nullable=False)
     collection = db.Column(db.String(255), nullable=False)
     Type = db.Column(db.String(255), nullable=False)
+    shirt_price = db.Column(db.Integer(), nullable=False, default=100)
+    hoodie_price = db.Column(db.Integer(), nullable=False, default=150)
     sold = db.Column(db.Integer, nullable=False, default=0)
 
 
@@ -34,6 +36,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True)
     password = db.Column(db.String(255))
+    earnings = db.Column(db.Integer, default=0)
     admin = db.Column(db.Boolean, nullable=False, default=False)
 
 
