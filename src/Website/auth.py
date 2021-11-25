@@ -47,6 +47,7 @@ def logout():
 
 @auth.route('/checkSizes/<color>', methods=["GET","POST"])
 def check_sizes(color):
+
     sizes = Colors.query.filter_by(color=color).all()
     for size in sizes:
         Color = {

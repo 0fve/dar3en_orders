@@ -104,15 +104,15 @@ def create_order():
                     design.sold += int(quantity)
                     db.session.commit()
 
-
-                def total(new_shirt):
+                # It's kinda obvius .... 
+                def totalPrice(new_shirt):
                     
                     shirtPrice = (int(quantity)*design.shirt_price)
                     hoodiePrice = (int(quantity)*design.hoodie_price)
                     tax = 0.15
 
                     if new_shirt.Type == 'Shirt':
-                        total_price = f"Total price: {shirtPrice*tax+shirtPrice}"
+                        total_price = f"Total price: {shirtPrice*tax+shirtPrice}" 
 
                     
                     elif new_shirt.Type == 'Hoodie':
@@ -120,7 +120,7 @@ def create_order():
 
                     flash(f"Order created! {total_price}", category="success")
 
-                total(new_shirt)
+                totalPrice(new_shirt)
             except ValueError:
                 flash("Phone number can only be numbers!", category='error')
 
@@ -157,6 +157,8 @@ def register_client():
                 flash("Last name should be more than 2 characters!", category='error')
             if client_phone == '':
                 flash("Please enter client's phone number", category='error')
+            if len(client_phone) < 9:
+                flash("Phone number has to be 9 characters", category='error')
             try:
                 int(client_phone)
             except ValueError:
@@ -176,9 +178,21 @@ def register_client():
     return render_template('client.html')
 
 @views.route('/', methods=["GET", "POST"])
-def home():
+def index():
 
     if not current_user.is_authenticated:
         return redirect(url_for('auth.login'))
-    else:
-        return redirect(url_for('views.register_client'))
+    
+    return redirect(url_for('views.register_client'))
+
+
+@views.route('/orders', methods=["GET", "POST"])
+def orders():
+
+    if request.method == "POST":
+        client_number = request.form.get("phoneNumber")
+        orders = Orders.query.filter_by(client_number=client_number).all()
+        client = Client.query.filter_by(client_phone_number=client_number).first()
+
+        return render_template("orders.html", orders=orders,client=client)
+    return render_template("orders.html")
