@@ -30,4 +30,4 @@ function enable_edit(){
         inp.disabled = false;
         inp.value ='';
     }
-};
+}

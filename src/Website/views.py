@@ -193,6 +193,14 @@ def orders():
         client_number = request.form.get("phoneNumber")
         orders = Orders.query.filter_by(client_number=client_number).all()
         client = Client.query.filter_by(client_phone_number=client_number).first()
+        # num = {
+        #     3:'three',
+        #     4:'four',
 
-        return render_template("orders.html", orders=orders,client=client)
+        # }
+        num = {}
+        for i in range(1,15):
+            num[i] = 't'*i
+        print(num)
+        return render_template("orders.html", orders=orders, client=client,num=num)
     return render_template("orders.html")

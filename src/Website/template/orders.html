@@ -81,112 +81,131 @@
                         </div>
                     </div>
                 </div>
-
-                {% for order in orders %}
+                {% for order in orders[::-1] %}
                 {% if request.method =='POST' %}
                 <div class="row mt-3" style="border-top: #696969 solid 1px;">
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="Design">Design</label>
-                            <input name="Design" type="text" class="form-control" value="{{ client.client_first_name }}" disabled>
+
+                    
+                    <button class="navbar-toggler d-inline-flex mt-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#{{ num[order.id] }}" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon d-flex">
+                            <svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'>
+                                <path stroke='rgba(255, 255, 255, 0.5)' stroke-linecap='round' stroke-miterlimit='10'
+                                    stroke-width='2' d='M4 7h22M4 15h22M4 23h22' />
+                            </svg></span>
+                            <h4 class="ml-5 text-white justify-content-end">{{ order.date }}</h4>
+                    </button>
+                   
+                    <div class="collapse order-collapse" id="{{ num[order.id] }}">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="Design">First name</label>
+                                    <input name="Design" type="text" class="form-control"
+                                        value="{{ client.client_first_name }}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="Color">Last name</label>
+                                    <input name="Color" type="text" class="form-control"
+                                        value="{{ client.client_last_name }}" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="Design">Design</label>
+                                    <input name="Design" type="text" class="form-control" value="{{order.design_name}}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="Color">Color</label>
+                                    <input name="Color" type="text" class="form-control" value="{{order.color}}" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="Size">Size</label>
+                                    <input name="Size" type="text" class="form-control" value="{{order.tshirt_size}}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="Type">Type</label>
+                                    <input name="Type" type="text" class="form-control" value="{{order.Type}}" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            {% if order.done %}
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="Status">Status</label>
+                                    <input type="text" class="form-control done"  value="Ready" 
+                                    vale="Done" disabled>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="Status">Status</label>
+                                    <input type="text" class="form-control done"  value="In progress" 
+                                    vale="Done" disabled>
+                                </div>
+                            </div>
+                            {% endif %} 
+                            {% if not order.adjustments %}
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="Adjustment">Adjustment </label>
+                                    <input id="adjustment" type="text" class="form-control edit_box" value="No adjustments" disabled>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="Adjustment">Adjustment </label>
+                                    <input id="adjustment" type="text" class="form-control edit_box" value="{{order.adjustments}}" disabled>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="quantity">Quantity</label>
+                                    <input name="quantity" type="text" class="form-control edit_box" value="{{order.quantity}}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="phoneNumber">Phone number</label>
+                                    <input name="phoneNumber" type="text" class="form-control" value="{{order.client_number}}" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="OrderNumber">Order number</label>
+                                    <input name="OrderNumber" type="text" class="form-control" value="{{order.id}}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="OrderCreated">Order created</label>
+                                    <input name="OrderCreated" type="text" class="form-control" value="{{order.date}}" disabled>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="Color">Color</label>
-                            <input name="Color" type="text" class="form-control" value="{{ client.client_last_name }}" disabled>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="Design">Design</label>
-                            <input name="Design" type="text" class="form-control" value="{{order.design_name}}" disabled>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="Color">Color</label>
-                            <input name="Color" type="text" class="form-control" value="{{order.color}}" disabled>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="Size">Size</label>
-                            <input name="Size" type="text" class="form-control" value="{{order.tshirt_size}}" disabled>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="Type">Type</label>
-                            <input name="Type" type="text" class="form-control" value="{{order.Type}}" disabled>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    {% if order.done %}
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="Adjustment">Status</label>
-                            <input type="text" class="form-control done"  value="Ready" 
-                            vale="Done" disabled>
-                        </div>
-                    </div>
-                    {% else %}
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="Adjustment">Status</label>
-                            <input type="text" class="form-control done"  value="In progress" 
-                            vale="Done" disabled>
-                        </div>
-                    </div>
-                    {% endif %} 
-                    {% if not order.adjustments %}
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="Adjustment">Adjustment </label>
-                            <input id="adjustment" type="text" class="form-control edit_box" value="No adjustments" disabled>
-                        </div>
-                    </div>
-                    {% else %}
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="Adjustment">Adjustment </label>
-                            <input id="adjustment" type="text" class="form-control edit_box" value="{{order.adjustments}}" disabled>
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="quantity">Quantity</label>
-                            <input name="quantity" type="text" class="form-control edit_box" value="{{order.quantity}}" disabled>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="phoneNumber">Phone number</label>
-                            <input name="client_number" type="text" class="form-control" value="{{order.client_number}}" disabled>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="quantity">Order number</label>
-                            <input name="quantity" type="text" class="form-control" value="{{order.id}}" disabled>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group my-2">
-                            <label for="quantity">Order created</label>
-                            <input name="quantity" type="text" class="form-control" value="{{order.date}}" disabled>
-                        </div>
-                    </div>
+
                 </div>
 
                 {% endif %}
@@ -194,7 +213,7 @@
                 <div class="row">
                     {% if request.method =='POST' %}
 
-                    <div class="col-6 mt-5 d-flex justify-content-center ">
+                    <div class="col-6 mt-5 ">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                     <div class="col-6 mt-5 d-flex justify-content-center">
@@ -209,6 +228,8 @@
                     </center>
                     {% endif %}
                 </div>
+
+
             </form>
         </div>
 
