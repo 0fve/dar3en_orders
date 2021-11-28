@@ -26,7 +26,6 @@ function enable_edit(){
     let adjustments_inp = document.getElementsByClassName('edit_box')
     let done = document.getElementsByClassName('done')
     for (inp of adjustments_inp){
-        console.log(done);
         inp.disabled = false;
         inp.value ='';
     }

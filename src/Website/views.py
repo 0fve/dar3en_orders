@@ -17,6 +17,13 @@ from datetime import date
 
 views = Blueprint('views', __name__)
 
+@views.route('/', methods=["GET", "POST"])
+def index():
+
+    if not current_user.is_authenticated:
+        return redirect(url_for('auth.login'))
+    
+    return redirect(url_for('views.register_client'))
 
 @views.route('/create_order', methods=["GET", "POST"])
 def create_order():
@@ -177,13 +184,7 @@ def register_client():
 
     return render_template('client.html')
 
-@views.route('/', methods=["GET", "POST"])
-def index():
 
-    if not current_user.is_authenticated:
-        return redirect(url_for('auth.login'))
-    
-    return redirect(url_for('views.register_client'))
 
 
 @views.route('/orders', methods=["GET", "POST"])
@@ -193,11 +194,6 @@ def orders():
         client_number = request.form.get("phoneNumber")
         orders = Orders.query.filter_by(client_number=client_number).all()
         client = Client.query.filter_by(client_phone_number=client_number).first()
-        # num = {
-        #     3:'three',
-        #     4:'four',
-
-        # }
         num = {}
         for i in range(1,15):
             num[i] = 't'*i

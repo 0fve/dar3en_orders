@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-    <title>Dar3en | {% block title %}Create order{% endblock %}</title>
+    <title>Dar3en | Manag orders</title>
 
 </head>
 
@@ -76,16 +76,16 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">+966</div>
                             </div>
-                            <input name="phoneNumber" type="text" class="form-control" id="inlineFormInputGroup"
+                            <input name="phoneNumber" type="tel" class="form-control" id="inlineFormInputGroup"
                                 placeholder="Phone number">
                         </div>
                     </div>
                 </div>
-                {% for order in orders[::-1] %}
                 {% if request.method =='POST' %}
+                {% for order in orders[::-1] %}
                 <div class="row mt-3" style="border-top: #696969 solid 1px;">
 
-                    
+
                     <button class="navbar-toggler d-inline-flex mt-3" type="button" data-bs-toggle="collapse"
                         data-bs-target="#{{ num[order.id] }}" aria-controls="navbarNavAltMarkup" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -94,9 +94,9 @@
                                 <path stroke='rgba(255, 255, 255, 0.5)' stroke-linecap='round' stroke-miterlimit='10'
                                     stroke-width='2' d='M4 7h22M4 15h22M4 23h22' />
                             </svg></span>
-                            <h4 class="ml-5 text-white justify-content-end">{{ order.date }}</h4>
+                        <h4 class="ml-5 text-white justify-content-end">{{ order.date }}</h4>
                     </button>
-                   
+
                     <div class="collapse order-collapse" id="{{ num[order.id] }}">
                         <div class="row">
                             <div class="col-6">
@@ -118,13 +118,15 @@
                             <div class="col-6">
                                 <div class="form-group my-2">
                                     <label for="Design">Design</label>
-                                    <input name="Design" type="text" class="form-control" value="{{order.design_name}}" disabled>
+                                    <input name="Design" type="text" class="form-control" value="{{order.design_name}}"
+                                        disabled>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group my-2">
                                     <label for="Color">Color</label>
-                                    <input name="Color" type="text" class="form-control" value="{{order.color}}" disabled>
+                                    <input name="Color" type="text" class="form-control" value="{{order.color}}"
+                                        disabled>
                                 </div>
                             </div>
                         </div>
@@ -132,7 +134,8 @@
                             <div class="col-6">
                                 <div class="form-group my-2">
                                     <label for="Size">Size</label>
-                                    <input name="Size" type="text" class="form-control" value="{{order.tshirt_size}}" disabled>
+                                    <input name="Size" type="text" class="form-control" value="{{order.tshirt_size}}"
+                                        disabled>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -143,35 +146,45 @@
                             </div>
                         </div>
                         <div class="row">
-                            {% if order.done %}
+                            {% if order.done == true %}
                             <div class="col-6">
                                 <div class="form-group my-2">
                                     <label for="Status">Status</label>
-                                    <input type="text" class="form-control done"  value="Ready" 
-                                    vale="Done" disabled>
+                                    <input type="text" class="form-control" value="Ready" vale="Done" disabled>
                                 </div>
                             </div>
                             {% else %}
                             <div class="col-6">
                                 <div class="form-group my-2">
                                     <label for="Status">Status</label>
-                                    <input type="text" class="form-control done"  value="In progress" 
-                                    vale="Done" disabled>
+                                    <input type="text" class="form-control" value="In progress" vale="Done" disabled>
                                 </div>
                             </div>
-                            {% endif %} 
+                            {% endif %}
                             {% if not order.adjustments %}
+                            {% if order.done == true %}
                             <div class="col-6">
                                 <div class="form-group my-2">
                                     <label for="Adjustment">Adjustment </label>
-                                    <input id="adjustment" type="text" class="form-control edit_box" value="No adjustments" disabled>
+                                    <input id="adjustment" type="text" class="form-control" value="No adjustments"
+                                        disabled>
                                 </div>
                             </div>
                             {% else %}
                             <div class="col-6">
                                 <div class="form-group my-2">
                                     <label for="Adjustment">Adjustment </label>
-                                    <input id="adjustment" type="text" class="form-control edit_box" value="{{order.adjustments}}" disabled>
+                                    <input id="adjustment" type="text" class="form-control edit_box" value="No adjustments"
+                                        disabled>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% else %}
+                            <div class="col-6">
+                                <div class="form-group my-2">
+                                    <label for="Adjustment">Adjustment </label>
+                                    <input id="adjustment" type="text" class="form-control "
+                                        value="{{order.adjustments}}" disabled>
                                 </div>
                             </div>
                             {% endif %}
@@ -180,13 +193,15 @@
                             <div class="col-6">
                                 <div class="form-group my-2">
                                     <label for="quantity">Quantity</label>
-                                    <input name="quantity" type="text" class="form-control edit_box" value="{{order.quantity}}" disabled>
+                                    <input name="quantity" type="text" class="form-control" value="{{order.quantity}}"
+                                        disabled>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group my-2">
                                     <label for="phoneNumber">Phone number</label>
-                                    <input name="phoneNumber" type="text" class="form-control" value="{{order.client_number}}" disabled>
+                                    <input name="phoneNumber" type="text" class="form-control"
+                                        value="{{order.client_number}}" disabled>
                                 </div>
                             </div>
                         </div>
@@ -194,13 +209,15 @@
                             <div class="col-6">
                                 <div class="form-group my-2">
                                     <label for="OrderNumber">Order number</label>
-                                    <input name="OrderNumber" type="text" class="form-control" value="{{order.id}}" disabled>
+                                    <input name="OrderNumber" type="text" class="form-control" value="{{order.id}}"
+                                        disabled>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group my-2">
                                     <label for="OrderCreated">Order created</label>
-                                    <input name="OrderCreated" type="text" class="form-control" value="{{order.date}}" disabled>
+                                    <input name="OrderCreated" type="text" class="form-control" value="{{order.date}}"
+                                        disabled>
                                 </div>
                             </div>
                         </div>
@@ -208,12 +225,12 @@
 
                 </div>
 
-                {% endif %}
                 {% endfor %}
+                {% endif %}
                 <div class="row">
                     {% if request.method =='POST' %}
 
-                    <div class="col-6 mt-5 ">
+                    <div class="col-6 mt-5 d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                     <div class="col-6 mt-5 d-flex justify-content-center">
