@@ -1,8 +1,6 @@
 
 function Get_color() {
     let current_color = (form.color[form.color.selectedIndex].text);
-
-
     // Make a request for a color to check for existing sizes
     axios.get('/checkSizes/' + current_color)
         .then(function (response) {
@@ -30,3 +28,17 @@ function enable_edit(){
         inp.value ='';
     }
 }
+form_action.addEventListener('submit', change_action());
+
+function change_action(){
+
+    let client_number = document.getElementById('phoneNumber').value;
+    let orders_container = document.getElementById('js-data').innerHTML
+    
+    axios.get('orders/'+client_number).then(function(response){
+    })
+
+}
+
+
+

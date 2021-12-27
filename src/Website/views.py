@@ -187,16 +187,22 @@ def register_client():
 
 
 
-@views.route('/orders', methods=["GET", "POST"])
+@views.route('/orders', methods=["GET"])
 def orders():
-
+    
     if request.method == "POST":
         client_number = request.form.get("phoneNumber")
-        orders = Orders.query.filter_by(client_number=client_number).all()
-        client = Client.query.filter_by(client_phone_number=client_number).first()
         num = {}
         for i in range(1,15):
             num[i] = 't'*i
-        print(num)
+        orders = Orders.query.filter_by(client_number=client_number).all()
+        client = Client.query.filter_by(client_phone_number=client_number).first()
+        
+        if not orders:
+            flash("Phone number does not exist!", category="error")
+
+        url = "/orders/checker"
         return render_template("orders.html", orders=orders, client=client,num=num)
+        
     return render_template("orders.html")
+
