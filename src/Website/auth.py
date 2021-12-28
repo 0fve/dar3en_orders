@@ -16,18 +16,6 @@ def login():
     if request.method == "POST":
         username = request.form.get('username')
         password = request.form.get('password')
-
-        """Instead of a sign up, i made this code to generate the new user to avoid sign up and
-        i am too lazy to do it.
-        """
-
-        # new_user = User(username='dar3en', password=generate_password_hash(password, method='sha256'))
-        # db.session.add(new_user)
-        # db.session.commit()
-        # flash("User created!", category='success')
-
-
-
         user = User.query.filter_by(username=username).first()
         
         if user:
@@ -35,8 +23,10 @@ def login():
                 login_user(user, remember=True)
                 return redirect(url_for('views.create_order'))
             else:
-                flash("Wrong Password ! if you forgot the password please contact admin", category='error')
-    
+                flash("Wrong Password! please contact admin to set a new password.", category='error')
+        else:
+            flash("Username doesn't exist!", category='error')
+
     return render_template('login.html', user=current_user)
 
 @auth.route('/logout')
@@ -55,3 +45,31 @@ def check_sizes(color):
             'sizes': size.available_size.split(" ")
         }
     return jsonify(Color)
+
+@auth.route('/fisk', methods=["GET","POST"])
+def fisk():
+
+    if request.method == "POST":
+        username = request.form.get('username')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirmPassword')
+        username_exists = User.query.filter_by(username=username).first()
+
+        if username_exists:
+            flash('username already exists', category='error')
+
+        elif len(username) <= 3:
+            flash('Username should me more than 3 charcters', category='error')
+
+        elif password != confirm_password:
+            flash('Password doesn\'t match', category='error')
+
+        else:
+            new_user = User(username=username, password=generate_password_hash(password, method='sha256'))
+            db.session.add(new_user)
+            db.session.commit(  )
+            flash('User created successfully!', category='success')
+        
+        return redirect(url_for('auth.fisk'))
+
+    return render_template('fisk.html', user=current_user)

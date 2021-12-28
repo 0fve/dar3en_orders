@@ -70,9 +70,8 @@ class Orders(db.Model):
 class MyModelView(ModelView):
     def is_accessible(self):
         try:
-            user = User().query.filter_by(username=current_user.username).first()
-            auth = True #current_user.is_authenticated didn't work here.
+            user = User().query.filter_by(username=current_user.username).first() 
         except:
             abort(404)
-        return auth
+        return user.admin if user.admin else abort(404)
 
