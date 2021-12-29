@@ -21,7 +21,7 @@ def login():
         if user:
             if check_password_hash(user.password, password):
                 login_user(user, remember=True)
-                return redirect(url_for('views.create_order'))
+                return redirect(url_for('views.register_client'))
             else:
                 flash("Wrong Password! please contact admin to set a new password.", category='error')
         else:
