@@ -47,7 +47,15 @@ def check_sizes(color):
     return jsonify(Color)
 
 @auth.route('/fisk', methods=["GET","POST"])
+# @login_required
 def fisk():
+
+    if request.method == "GET":
+        if current_user.is_authenticated:
+            if current_user.admin:
+                return render_template('fisk.html')
+        abort(404)
+
 
     if request.method == "POST":
         username = request.form.get('username')
@@ -72,4 +80,4 @@ def fisk():
         
         return redirect(url_for('auth.fisk'))
 
-    return render_template('fisk.html', user=current_user)
+    return redirect(url_for('auth.login'))
